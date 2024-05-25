@@ -10,6 +10,13 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/banner', (req, res) => {
+  db.query('SELECT TOP 5 * FROM phim ORDER BY NgayThem DESC', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
 // Lấy thông tin phim theo ID
 router.get('/:id', (req, res) => {
   const id = req.params.id;
