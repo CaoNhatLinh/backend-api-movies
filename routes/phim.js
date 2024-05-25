@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/banner', (req, res) => {
-  db.query('SELECT TOP 5 * FROM phim ORDER BY NgayThem DESC', (err, results) => {
+  db.query('SELECT * FROM defaultdb.Phim ORDER BY NgayThem DESC LIMIT 5', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
