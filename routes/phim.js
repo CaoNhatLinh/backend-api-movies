@@ -17,6 +17,7 @@ router.get('/banner', (req, res) => {
   });
 });
 
+
 // Lấy thông tin phim theo ID
 router.get('/:id', (req, res) => {
   const id = req.params.id;
@@ -51,6 +52,14 @@ router.delete('/:id', (req, res) => {
   db.query('DELETE FROM Phim WHERE MaPhim = ?', [id], (err, result) => {
     if (err) throw err;
     res.json({ message: 'Phim deleted' });
+  });
+});
+
+router.get('/search/:name', (req, res) => {
+  const name = req.params.name;
+  db.query('SELECT * FROM Phim WHERE TenPhim LIKE ?', [`%${name}%`], (err, result) => {
+    if (err) throw err;
+    res.json(result);
   });
 });
 
