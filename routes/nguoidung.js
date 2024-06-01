@@ -49,12 +49,10 @@ router.delete('/:id', (req, res) => {
 //triệu thêm
 // Route để xử lý yêu cầu đăng nhập
 router.post('/login', (req, res) => {
-  const { username, password } = req.body;
+  const { emailOrUsername, password } = req.body;
 
-  // Kiểm tra xem username và password có hợp lệ hay không
-  // Thực hiện truy vấn trong cơ sở dữ liệu để kiểm tra thông tin đăng nhập
-  // Ví dụ:
-  db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, result) => {
+  // Kiểm tra xem emailOrUsername và password có hợp lệ hay không
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
     if (err) {
       res.status(500).json({ message: "Đã xảy ra lỗi khi đăng nhập" });
       return;
