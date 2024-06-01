@@ -76,7 +76,7 @@ router.get('/info', (req, res) => {
 
 
 // Lấy thông tin người dùng dựa trên tên đăng nhập và mật khẩu
-router.post('/', (req, res) => {
+router.post('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
   // Truy vấn cơ sở dữ liệu để lấy người dùng có tên đăng nhập hoặc email tương ứng
   db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?)', [emailOrUsername, emailOrUsername], (err, result) => {
