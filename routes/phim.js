@@ -62,5 +62,16 @@ router.get('/search/:name', (req, res) => {
     res.json(result);
   });
 });
-
+// Endpoint tìm kiếm phim theo tiêu đề
+router.get('/:name', (req, res) => {
+  const name = req.params.name;
+  db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json(result);
+    }
+  });
+});
 module.exports = router;
