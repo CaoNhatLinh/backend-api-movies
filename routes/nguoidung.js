@@ -82,4 +82,18 @@ router.post('/login', (req, res) => {
   });
 });
 
+// Lấy thông tin người dùng dựa trên tên đăng nhập và mật khẩu
+router.get('/login', (req, res) => {
+  const { emailOrUsername, password } = req.query;
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+    if (err) throw err;
+    if (result.length > 0) {
+      res.json({ message: 'Đăng nhập thành công', user: result[0] });
+    } else {
+      res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
+    }
+  });
+});
+
+
 module.exports = router;
