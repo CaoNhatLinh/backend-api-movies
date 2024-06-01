@@ -46,5 +46,41 @@ router.delete('/:id', (req, res) => {
     res.json({ message: 'NguoiDung deleted' });
   });
 });
+//triệu thêm
+// Lấy tên người dùng 
+router.get('/', (req, res) => {
+  db.query('SELECT TenDangNhap FROM NguoiDung;', [id], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
+// Lấy mật khẩu người dùng 
+router.get('/', (req, res) => {
+  db.query('SELECT MatKhau FROM NguoiDung;', [id], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
+// Lấy Email người dùng 
+router.get('/', (req, res) => {
+  db.query('SELECT Email FROM NguoiDung;', [id], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
 
+// Lấy thông tin người dùng dựa trên tên đăng nhập và mật khẩu
+router.post('/login', (req, res) => {
+  const { emailOrUsername, password } = req.body;
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+    if (err) throw err;
+    if (result.length > 0) {
+      // Nếu tìm thấy người dùng với tên đăng nhập hoặc email và mật khẩu đúng
+      res.json({ message: 'Đăng nhập thành công', user: result[0] });
+    } else {
+      // Nếu không tìm thấy người dùng hoặc thông tin đăng nhập không chính xác
+      res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
+    }
+  });
+});
 module.exports = router;
