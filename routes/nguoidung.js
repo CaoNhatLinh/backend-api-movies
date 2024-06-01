@@ -47,11 +47,9 @@ router.delete('/:id', (req, res) => {
   });
 });
 //triệu thêm
-// Route để xử lý yêu cầu đăng nhập
 router.post('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
 
-  // Kiểm tra xem emailOrUsername và password có hợp lệ hay không
   db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
     if (err) {
       res.status(500).json({ message: "Đã xảy ra lỗi khi đăng nhập" });
@@ -63,8 +61,30 @@ router.post('/login', (req, res) => {
       return;
     }
 
-    // Nếu thông tin đăng nhập hợp lệ, trả về thông tin người dùng
     res.json({ message: "Đăng nhập thành công", user: result[0] });
+  });
+});
+
+router.get('/bypassword/:password', (req, res) => {
+  const password = req.params.password;
+  db.query('SELECT * FROM NguoiDung WHERE MatKhau = ?', [password], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
+
+router.get('/byemail/:email', (req, res) => {
+  const email = req.params.email;
+  db.query('SELECT * FROM NguoiDung WHERE Email = ?', [email], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
+router.get('/byname/:name', (req, res) => {
+  const name = req.params.name;
+  db.query('SELECT * FROM NguoiDung WHERE TenDangNhap = ?', [name], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
   });
 });
 
