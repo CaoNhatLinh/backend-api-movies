@@ -48,47 +48,48 @@ router.delete('/:id', (req, res) => {
 });
 //triệu thêm
 // Lấy tên người dùng 
-router.get('/', (req, res) => {
-  db.query('SELECT TenDangNhap FROM NguoiDung;', [id], (err, result) => {
-    if (err) throw err;
-    res.json(result[0]);
-  });
-});
-// Lấy mật khẩu người dùng 
-router.get('/', (req, res) => {
-  db.query('SELECT MatKhau FROM NguoiDung;', [id], (err, result) => {
-    if (err) throw err;
-    res.json(result[0]);
-  });
-});
-// Lấy Email người dùng 
-router.get('/', (req, res) => {
-  db.query('SELECT Email FROM NguoiDung;', [id], (err, result) => {
-    if (err) throw err;
-    res.json(result[0]);
-  });
-});
-
-// Lấy thông tin người dùng dựa trên tên đăng nhập và mật khẩu
-router.post('/login', (req, res) => {
-  const { emailOrUsername, password } = req.body;
-  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+// Lấy mật khẩu người dùng
+router.get('/password', (req, res) => {
+  const { emailOrUsername } = req.query;
+  db.query('SELECT MatKhau FROM NguoiDung WHERE TenDangNhap = ? OR Email = ?', [emailOrUsername, emailOrUsername], (err, result) => {
     if (err) throw err;
     if (result.length > 0) {
-      res.json({ message: 'Đăng nhập thành công', user: result[0] });
+      res.json({ password: result[0].MatKhau });
     } else {
-      res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
+      res.status(404).json({ message: 'Không tìm thấy người dùng' });
+    }
+  });
+});
+// Lấy thông tin người dùng dựa trên tên đăng nhập hoặc email
+router.get('/info', (req, res) => {
+  const { emailOrUsername } = req.query;
+  db.query('SELECT * FROM NguoiDung WHERE TenDangNhap = ? OR Email = ?', [emailOrUsername, emailOrUsername], (err, result) => {
+    if (err) throw err;
+    if (result.length > 0) {
+      res.json({ user: result[0] });
+    } else {
+      res.status(404).json({ message: 'Không tìm thấy người dùng' });
     }
   });
 });
 
+
+
 // Lấy thông tin người dùng dựa trên tên đăng nhập và mật khẩu
-router.get('/login', (req, res) => {
-  const { emailOrUsername, password } = req.query;
-  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+router.post('/login', (req, res) => {
+  const { emailOrUsername, password } = req.body;
+  // Truy vấn cơ sở dữ liệu để lấy người dùng có tên đăng nhập hoặc email tương ứng
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?)', [emailOrUsername, emailOrUsername], (err, result) => {
     if (err) throw err;
     if (result.length > 0) {
-      res.json({ message: 'Đăng nhập thành công', user: result[0] });
+      // Nếu có người dùng tồn tại với tên đăng nhập hoặc email tương ứng
+      const user = result[0];
+      // Kiểm tra xem mật khẩu nhập vào có khớp với mật khẩu trong cơ sở dữ liệu hay không
+      if (user.MatKhau === password) {
+        res.json({ message: 'Đăng nhập thành công', user });
+      } else {
+        res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
+      }
     } else {
       res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
     }
