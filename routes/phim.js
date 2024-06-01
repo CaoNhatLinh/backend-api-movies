@@ -63,7 +63,7 @@ router.get('/search/:name', (req, res) => {
   });
 });
 // Endpoint tìm kiếm phim theo tiêu đề
-router.get('/:name', (req, res) => {
+router.get('/', (req, res) => {
   const name = req.params.name;
   db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
     if (err) {
