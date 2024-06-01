@@ -72,27 +72,11 @@ router.get('/', (req, res) => {
 // Lấy thông tin người dùng dựa trên tên đăng nhập và mật khẩu
 router.post('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
-  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?)', [emailOrUsername, emailOrUsername], (err, result) => {
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
     if (err) throw err;
     if (result.length > 0) {
-      const user = result[0];
-      // So sánh mật khẩu đã nhập với mật khẩu đã mã hóa trong cơ sở dữ liệu
-      bcrypt.compare(password, user.MatKhau, (err, passwordMatch) => {
-        if (err) {
-          // Xử lý lỗi nếu có
-          res.status(500).json({ message: 'Lỗi xảy ra khi xác minh mật khẩu' });
-        } else {
-          if (passwordMatch) {
-            // Nếu mật khẩu khớp, đăng nhập thành công
-            res.json({ message: 'Đăng nhập thành công', user });
-          } else {
-            // Nếu mật khẩu không khớp, thông báo lỗi
-            res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
-          }
-        }
-      });
+      res.json({ message: 'Đăng nhập thành công', user: result[0] });
     } else {
-      // Nếu không tìm thấy người dùng với tên đăng nhập hoặc email
       res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
     }
   });
