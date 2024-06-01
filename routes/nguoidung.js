@@ -88,5 +88,19 @@ router.get('/byname/:name', (req, res) => {
   });
 });
 
+// Thêm người dùng mới
+router.post('/register', (req, res) => {
+  const nguoiDung = req.body; // Lấy thông tin người dùng từ request body
+  // Thực hiện truy vấn để thêm người dùng mới vào cơ sở dữ liệu
+  db.query('INSERT INTO NguoiDung SET ?', nguoiDung, (err, result) => {
+    if (err) {
+      // Nếu có lỗi, trả về mã lỗi 500 và thông báo lỗi
+      res.status(500).json({ error: err.message });
+    } else {
+      // Nếu thành công, trả về mã 201 Created và thông tin người dùng vừa đăng ký
+      res.status(201).json({ id: result.insertId, ...nguoiDung });
+    }
+  });
+});
 
 module.exports = router;
