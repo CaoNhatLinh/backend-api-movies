@@ -55,16 +55,9 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-router.get('/search/:name', (req, res) => {
-  const name = req.params.name;
-  db.query('SELECT * FROM Phim WHERE TenPhim LIKE ?', [`%${name}%`], (err, result) => {
-    if (err) throw err;
-    res.json(result);
-  });
-});
-// Endpoint tìm kiếm phim theo tiêu đề
-router.get('/:name', (req, res) => {
-  const name = req.params.name;
+// Định nghĩa route tìm kiếm phim
+router.get('/search', (req, res) => {
+  const name = req.query.name; // Lấy tên phim từ query parameter
   db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
     if (err) {
       console.error(err);
