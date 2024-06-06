@@ -74,4 +74,22 @@ router.get('/:name', (req, res) => {
     }
   });
 });
+router.get('/:phimId/danhgia', (req, res) => {
+  const phimId = req.params.phimId;
+  db.query('SELECT * FROM DanhGia WHERE MaPhim = ?', [phimId], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+router.get('/:phimId/theloai', (req, res) => {
+  const phimId = req.params.phimId;
+  const sql = `SELECT TheLoai.MaTheLoai, TheLoai.TenTheLoai 
+               FROM Phim_TheLoai 
+               JOIN TheLoai ON Phim_TheLoai.MaTheLoai = TheLoai.MaTheLoai 
+               WHERE Phim_TheLoai.MaPhim = ?`;
+  db.query(sql, [phimId], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
 module.exports = router;
