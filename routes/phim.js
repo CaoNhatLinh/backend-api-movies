@@ -69,8 +69,11 @@ router.get('/search', (req, res) => {
 });
 
 router.get('/search1/:name', (req, res) => {
-  const name =  req.query.name; // Lấy tên phim từ query parameter
-  db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
+  const name = req.params.name; 
+  const query = 'SELECT * FROM Phim WHERE TieuDe LIKE ?';
+  const values = [`%${name}%`]; 
+
+  db.query(query, values, (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'Internal server error' });
@@ -79,6 +82,7 @@ router.get('/search1/:name', (req, res) => {
     }
   });
 });
+
 
 router.get('/:phimId/danhgia', (req, res) => {
   const phimId = req.params.phimId;
