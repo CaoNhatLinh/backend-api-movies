@@ -67,6 +67,19 @@ router.get('/search', (req, res) => {
     }
   });
 });
+
+router.get('/search1/{name}', (req, res) => {
+  const name =  req.query.name; // Lấy tên phim từ query parameter
+  db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 router.get('/:phimId/danhgia', (req, res) => {
   const phimId = req.params.phimId;
   db.query('SELECT * FROM DanhGia WHERE MaPhim = ?', [phimId], (err, results) => {
