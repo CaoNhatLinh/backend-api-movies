@@ -57,7 +57,7 @@ router.delete('/:id', (req, res) => {
 
 // Định nghĩa route tìm kiếm phim
 router.get('/search', (req, res) => {
-  const name = req.query.name; // Lấy tên phim từ query parameter
+  const name = req.body; // Lấy tên phim từ query parameter
   db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
     if (err) {
       console.error(err);
