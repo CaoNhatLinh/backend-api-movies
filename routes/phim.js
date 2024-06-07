@@ -68,7 +68,7 @@ router.get('/search', (req, res) => {
   });
 });
 
-router.get('/search1/{name}', (req, res) => {
+router.get('/search1/:name', (req, res) => {
   const name =  req.query.name; // Lấy tên phim từ query parameter
   db.query('SELECT * FROM Phim WHERE TieuDe LIKE ?', [`%${name}%`], (err, result) => {
     if (err) {
