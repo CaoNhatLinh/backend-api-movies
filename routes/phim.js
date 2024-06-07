@@ -9,15 +9,22 @@ router.get('/', (req, res) => {
     res.json(results);
   });
 });
-
+// banner
 router.get('/banner', (req, res) => {
   db.query('SELECT * FROM defaultdb.Phim WHERE Banner IS NOT NULL ORDER BY NgayThem DESC LIMIT 5', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
 });
+// phim mới
+router.get('/phimmoi', (req, res) => {
+  db.query('SELECT * FROM defaultdb.Phim ORDER BY NgayThem DESC LIMIT 10', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
 //top phim Trung quốc
-router.get('/China/top', (req, res) => {
+router.get('/china/top', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -35,7 +42,7 @@ router.get('/China/top', (req, res) => {
   });
 });
 //top list phim Trung quốc
-router.get('/China', (req, res) => {
+router.get('/china', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -53,7 +60,7 @@ router.get('/China', (req, res) => {
   });
 });
 //top phim Hàn
-router.get('/Korea/top', (req, res) => {
+router.get('/korea/top', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -71,7 +78,7 @@ router.get('/Korea/top', (req, res) => {
   });
 });
 //list phim Hàn
-router.get('/Korea', (req, res) => {
+router.get('/korea', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -89,7 +96,7 @@ router.get('/Korea', (req, res) => {
   });
 });
 //Top anime
-router.get('/Anime/top', (req, res) => {
+router.get('/anime/top', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -108,7 +115,7 @@ router.get('/Anime/top', (req, res) => {
   });
 });
 //list anime
-router.get('/Anime', (req, res) => {
+router.get('/anime', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -127,7 +134,7 @@ router.get('/Anime', (req, res) => {
   });
 });
 //Top phim lãng mãn
-router.get('/Love/top', (req, res) => {
+router.get('/love/top', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
@@ -146,7 +153,7 @@ router.get('/Love/top', (req, res) => {
   });
 });
 //list phim lãng mãn
-router.get('/Love', (req, res) => {
+router.get('/love', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
