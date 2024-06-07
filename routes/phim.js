@@ -68,10 +68,10 @@ router.get('/search', (req, res) => {
   });
 });
 
-router.get('/search1/:name', (req, res) => {
-  const name = req.params.name; 
+router.get('/search1/:title', (req, res) => {
+  const title = req.params.title; // Lấy tiêu đề phim từ path variable
   const query = 'SELECT * FROM Phim WHERE TieuDe LIKE ?';
-  const values = [`%${name}%`]; 
+  const values = [`%${title}%`]; // Định dạng giá trị cho SQL query
 
   db.query(query, values, (err, result) => {
     if (err) {
