@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/banner', (req, res) => {
-  db.query('SELECT * FROM defaultdb.Phim ORDER BY NgayThem DESC LIMIT 5', (err, results) => {
+  db.query('SELECT * FROM defaultdb.Phim WHERE Banner IS NOT NULL ORDER BY NgayThem DESC LIMIT 5', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
