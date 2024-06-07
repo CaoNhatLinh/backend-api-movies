@@ -4,7 +4,7 @@ const db = require('../config/db');
 
 // Lấy danh sách tất cả các phim
 router.get('/', (req, res) => {
-  db.query('SELECT * FROM Phim', (err, results) => {
+  db.query('SELECT * FROM Phim ORDER BY NgayThem', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
@@ -16,8 +16,154 @@ router.get('/banner', (req, res) => {
     res.json(results);
   });
 });
-
-
+//top phim Trung quốc
+router.get('/China/top', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    WHERE Phim.QuocGia like '%China%'
+    ORDER BY Phim.NgayThem DESC
+    LIMIT 10;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//top list phim Trung quốc
+router.get('/China', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    WHERE Phim.QuocGia like '%China%'
+    ORDER BY Phim.NgayThem DESC
+    ;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//top phim Hàn
+router.get('/Korea/top', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    WHERE Phim.QuocGia like '%Korea%'
+    ORDER BY Phim.NgayThem DESC
+    LIMIT 10;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//list phim Hàn
+router.get('/Korea', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    WHERE Phim.QuocGia like '%Korea%'
+    ORDER BY Phim.NgayThem DESC
+   ;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//Top anime
+router.get('/Anime/top', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
+    WHERE TheLoai.TenTheLoai = 'Anime'
+    ORDER BY Phim.NgayThem DESC
+    LIMIT 10;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//list anime
+router.get('/Anime', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
+    WHERE TheLoai.TenTheLoai = 'Anime'
+    ORDER BY Phim.NgayThem DESC
+   ;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//Top phim lãng mãn
+router.get('/Love/top', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
+    WHERE TheLoai.TenTheLoai = 'Lãng mãn'
+    ORDER BY Phim.NgayThem DESC
+    LIMIT 10;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
+//list phim lãng mãn
+router.get('/Love', (req, res) => {
+  const sql = `
+    SELECT Phim.*
+    FROM defaultdb.Phim
+    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
+    WHERE TheLoai.TenTheLoai = 'Lãng mãn'
+    ORDER BY Phim.NgayThem DESC
+    ;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+});
 // Lấy thông tin phim theo ID
 router.get('/:id', (req, res) => {
   const id = req.params.id;
