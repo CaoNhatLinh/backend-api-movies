@@ -4,7 +4,7 @@ const db = require('../config/db');
 
 // Lấy danh sách tất cả các phim
 router.get('/', (req, res) => {
-  db.query('SELECT * FROM Phim ORDER BY NgayThem', (err, results) => {
+  db.query('SELECT * FROM Phim ORDER BY NgayThem DESC', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
