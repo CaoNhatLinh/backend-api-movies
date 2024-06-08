@@ -91,6 +91,10 @@ router.get('/byname/:name', (req, res) => {
 // Thêm người dùng mới
 router.post('/register', (req, res) => {
   const nguoiDung = req.body; // Lấy thông tin người dùng từ request body
+  
+  // Thiết lập giá trị mặc định cho MaQuyen là 'Client'
+  nguoiDung.MaQuyen = 'Client';
+  
   // Thực hiện truy vấn để thêm người dùng mới vào cơ sở dữ liệu
   db.query('INSERT INTO NguoiDung SET ?', nguoiDung, (err, result) => {
     if (err) {
@@ -102,5 +106,6 @@ router.post('/register', (req, res) => {
     }
   });
 });
+
 
 module.exports = router;
