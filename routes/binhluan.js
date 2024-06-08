@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Lấy thông tin bình luận theo ID
+// Lấy thông tin bình luận theo ID  
 router.get('/:id', (req, res) => {
   const id = req.params.id;
   db.query('SELECT * FROM BinhLuan WHERE MaBinhLuan = ?', [id], (err, result) => {
