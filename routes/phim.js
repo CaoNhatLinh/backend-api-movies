@@ -99,8 +99,9 @@ router.get('/korea', (req, res) => {
 router.get('/anime/top', (req, res) => {
   const sql = `
     SELECT Phim.*
-    FROM defaultdb.Phim
-    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
+   FROM defaultdb.Phim
+    JOIN defaultdb.Phim_TheLoai ON Phim.MaPhim = Phim_TheLoai.MaPhim
+    JOIN defaultdb.TheLoai ON TheLoai.MaTheLoai = Phim_TheLoai.MaTheLoai
     WHERE TheLoai.TenTheLoai = 'Anime'
     ORDER BY Phim.NgayThem DESC
     LIMIT 10;
@@ -119,7 +120,8 @@ router.get('/anime', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
-    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
+    JOIN defaultdb.Phim_TheLoai ON Phim.MaPhim = Phim_TheLoai.MaPhim
+    JOIN defaultdb.TheLoai ON TheLoai.MaTheLoai = Phim_TheLoai.MaTheLoai
     WHERE TheLoai.TenTheLoai = 'Anime'
     ORDER BY Phim.NgayThem DESC
    ;
@@ -138,10 +140,11 @@ router.get('/love/top', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
-    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
-    WHERE TheLoai.TenTheLoai = 'Lãng mãn'
+    JOIN defaultdb.Phim_TheLoai ON Phim.MaPhim = Phim_TheLoai.MaPhim
+    JOIN defaultdb.TheLoai ON TheLoai.MaTheLoai = Phim_TheLoai.MaTheLoai
+    WHERE TheLoai.TenTheLoai = 'Lãng mãn' or TheLoai.TenTheLoai = 'Tình cảm'
     ORDER BY Phim.NgayThem DESC
-    LIMIT 10;
+    LIMIT 10
   `;
   db.query(sql, (err, results) => {
     if (err) {
@@ -157,8 +160,9 @@ router.get('/love', (req, res) => {
   const sql = `
     SELECT Phim.*
     FROM defaultdb.Phim
-    JOIN defaultdb.TheLoai ON Phim.MaTheLoai = TheLoai.MaTheLoai
-    WHERE TheLoai.TenTheLoai = 'Lãng mãn'
+    JOIN defaultdb.Phim_TheLoai ON Phim.MaPhim = Phim_TheLoai.MaPhim
+    JOIN defaultdb.TheLoai ON TheLoai.MaTheLoai = Phim_TheLoai.MaTheLoai
+    WHERE TheLoai.TenTheLoai = 'Lãng mãn' or TheLoai.TenTheLoai = 'Tình cảm'
     ORDER BY Phim.NgayThem DESC
     ;
   `;
