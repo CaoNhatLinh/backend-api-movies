@@ -47,6 +47,23 @@ router.delete('/:id', (req, res) => {
   });
 });
 //triệu thêm
+// router.post('/login', (req, res) => {
+//   const { emailOrUsername, password } = req.body;
+
+//   db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+//     if (err) {
+//       res.status(500).json({ message: "Đã xảy ra lỗi khi đăng nhập" });
+//       return;
+//     }
+
+//     if (result.length === 0) {
+//       res.status(401).json({ message: "Thông tin đăng nhập không đúng" });
+//       return;
+//     }
+
+//     res.json({ message: "Đăng nhập thành công", user: result[0] });
+//   });
+// });
 router.post('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
 
