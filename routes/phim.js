@@ -272,19 +272,4 @@ router.post('/:phimId/danhgia', (req, res) => {
     }
   });
 });
-router.post('/:phimId/danhgia/:danhGiaId', (req, res) => {
-  const phimId = req.params.phimId;
-  const danhGiaId = req.params.danhGiaId;
-  const danhGia = req.body;
-  
-  db.query('UPDATE DanhGia SET MaNguoiDung = ?, DanhGia = ?, NgayDanhGia = NOW() WHERE MaPhim = ? AND MaDanhGia = ?', 
-           [danhGia.maNguoiDung, danhGia.danhGia, phimId, danhGiaId], (err, result) => {
-    if (err) {
-      console.error(err); 
-      res.status(500).json({ error: 'Database query failed' }); 
-    } else {
-      res.status(200).json({ message: 'Đánh giá đã được cập nhật thành công' }); 
-    }
-  });
-});
 module.exports = router;
