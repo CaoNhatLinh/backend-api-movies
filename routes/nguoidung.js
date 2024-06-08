@@ -47,6 +47,23 @@ router.delete('/:id', (req, res) => {
   });
 });
 //triệu thêm
+// router.post('/login', (req, res) => {
+//   const { emailOrUsername, password } = req.body;
+
+//   db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+//     if (err) {
+//       res.status(500).json({ message: "Đã xảy ra lỗi khi đăng nhập" });
+//       return;
+//     }
+
+//     if (result.length === 0) {
+//       res.status(401).json({ message: "Thông tin đăng nhập không đúng" });
+//       return;
+//     }
+
+//     res.json({ message: "Đăng nhập thành công", user: result[0] });
+//   });
+// });
 router.post('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
 
@@ -91,6 +108,10 @@ router.get('/byname/:name', (req, res) => {
 // Thêm người dùng mới
 router.post('/register', (req, res) => {
   const nguoiDung = req.body; // Lấy thông tin người dùng từ request body
+  
+  // Thiết lập giá trị mặc định cho MaQuyen là 'Client'
+  nguoiDung.MaQuyen = 'Client';
+  
   // Thực hiện truy vấn để thêm người dùng mới vào cơ sở dữ liệu
   db.query('INSERT INTO NguoiDung SET ?', nguoiDung, (err, result) => {
     if (err) {
@@ -102,5 +123,6 @@ router.post('/register', (req, res) => {
     }
   });
 });
+
 
 module.exports = router;
