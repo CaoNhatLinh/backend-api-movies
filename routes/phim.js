@@ -85,4 +85,17 @@ router.get('/:phimId/theloai', (req, res) => {
     res.json(results);
   });
 });
+router.post('/:phimId/danhgia', (req, res) => {
+  const phimId = req.params.phimId;
+  const danhGia = req.body; 
+  db.query('INSERT INTO DanhGia (MaPhim, MaNguoiDung, DanhGia, NgayDanhGia) VALUES (?, ?, ?, NOW())', 
+           [phimId, danhGia.maNguoiDung, danhGia.danhGia], (err, result) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.status(201).json({ message: 'Đánh giá đã được gửi thành công' }); 
+    }
+  });
+});
 module.exports = router;
