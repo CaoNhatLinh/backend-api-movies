@@ -29,39 +29,18 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// Thêm đánh giá mới
-// router.post('/', (req, res) => {
-//   const danhgia = req.body;
-//   db.query('INSERT INTO DanhGia SET ?', danhgia, (err, result) => {
-//     if (err) {
-//       res.status(500).json({ error: err.message });
-//     } else {
-//       res.status(201).json({ id: result.insertId, ...danhgia });
-//     }
-//   });
-// });
+//Thêm đánh giá mới
 router.post('/', (req, res) => {
   const danhgia = req.body;
-  console.log('Received data:', danhgia); // In ra dữ liệu nhận được từ client
-
-  // Chắc chắn rằng các trường dữ liệu là hợp lệ và không null
-  const { MaNguoiDung, MaPhim, DanhGia, NgayDanhGia } = danhgia;
-  if (!MaNguoiDung || !MaPhim || !DanhGia || !NgayDanhGia) {
-    return res.status(400).json({ error: 'Thiếu dữ liệu yêu cầu' });
-  }
-
-  const sql = 'INSERT INTO DanhGia (MaNguoiDung, MaPhim, DanhGia, NgayDanhGia) VALUES (?, ?, ?, ?)';
-  const values = [MaNguoiDung, MaPhim, DanhGia, NgayDanhGia];
-
-  db.query(sql, values, (err, result) => {
+  db.query('INSERT INTO DanhGia SET ?', danhgia, (err, result) => {
     if (err) {
-      console.error('SQL Error:', err); // In ra lỗi SQL
       res.status(500).json({ error: err.message });
     } else {
       res.status(201).json({ id: result.insertId, ...danhgia });
     }
   });
 });
+
 
 // Cập nhật thông tin đánh giá
 router.put('/:id', (req, res) => {
