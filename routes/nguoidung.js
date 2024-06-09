@@ -146,5 +146,33 @@ router.post('/register', (req, res) => {
   });
 });
 
+// Đổi mật khẩu
+router.post('/change-password', (req, res) => {
+  const { emailOrUsername, oldPassword, newPassword } = req.body;
+
+  // Kiểm tra thông tin người dùng và mật khẩu cũ
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, oldPassword], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: "Đã xảy ra lỗi khi kiểm tra mật khẩu cũ" });
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(401).json({ message: "Mật khẩu cũ không đúng" });
+      return;
+    }
+
+    // Cập nhật mật khẩu mới
+    db.query('UPDATE NguoiDung SET MatKhau = ? WHERE MaNguoiDung = ?', [newPassword, result[0].MaNguoiDung], (err, updateResult) => {
+      if (err) {
+        res.status(500).json({ message: "Đã xảy ra lỗi khi cập nhật mật khẩu mới" });
+        return;
+      }
+
+      res.json({ message: "Đổi mật khẩu thành công" });
+    });
+  });
+});
+
 
 module.exports = router;
