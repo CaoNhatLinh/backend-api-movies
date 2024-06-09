@@ -9,20 +9,17 @@ router.get('/', (req, res) => {
     return res.status(400).json({ error: 'Thiếu MaNguoiDung' });
   }
 
-  // Truy vấn cơ sở dữ liệu với maNguoiDung
   db.query('SELECT * FROM defaultdb.phim_nguoiDung WHERE MaNguoiDung = ?', [maNguoiDung], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
 
-    // Kiểm tra nếu không có bản ghi nào được tìm thấy
     if (results.length === 0) {
       return res.status(404).json({ 
         error: `Không tìm thấy bản ghi nào cho MaNguoiDung đã cho: ${maNguoiDung}` 
       });
     }
 
-    // Trả về kết quả nếu có bản ghi được tìm thấy
     res.json(results);
   });
 });
