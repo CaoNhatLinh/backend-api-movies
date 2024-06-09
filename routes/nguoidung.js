@@ -47,7 +47,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 //triệu thêm
-router.post('/login', (req, res) => {
+router.get('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
 
   db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
