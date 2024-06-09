@@ -67,7 +67,7 @@ router.post('/login', (req, res) => {
 
 router.get('/:TenDangNhap', (req, res) => {
   const TenDangNhap = req.params.TenDangNhap;
-  db.query('SELECT * FROM NguoiDung WHERE TenDangNhap = ? OR Email = ?',[TenDangNhap,TenDangNhap], (err, results) => {
+  db.query('SELECT * FROM defaultdb.NguoiDung WHERE TenDangNhap = ? OR Email = ?',[TenDangNhap,TenDangNhap], (err, results) => {
     if (err) throw err;
     res.json(results);
   });
