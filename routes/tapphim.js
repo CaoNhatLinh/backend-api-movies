@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
 });
 router.get('/xemphim/:matapphim', (req, res) => {
   const matapphim = req.params.matapphim;
-  db.query('SELECT * FROM TapPhim WHERE MaTapPhim =?', [id], (err, result) => {
+  db.query('SELECT * FROM TapPhim WHERE MaTapPhim =?', [matapphim], (err, result) => {
     if (err) throw err;
     res.json(result[0]);
   });
