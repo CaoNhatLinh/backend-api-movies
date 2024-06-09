@@ -17,6 +17,14 @@ router.get('/:id', (req, res) => {
     res.json(result[0]);
   });
 });
+router.get('/:id/:matapphim', (req, res) => {
+  const id = req.params.id;
+  const matapphim = req.params.matapphim;
+  db.query('SELECT * FROM TapPhim WHERE MaPhim = ? and MaTapPhim =?', [id,matapphim], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
 
 // Thêm tập phim mới
 router.post('/', (req, res) => {
