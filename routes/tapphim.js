@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 // Lấy thông tin tập phim theo ID
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  db.query('SELECT * FROM TapPhim WHERE MaTapPhim = ?', [id], (err, result) => {
+  db.query('SELECT * FROM TapPhim WHERE MaPhim = ?', [id], (err, result) => {
     if (err) throw err;
     res.json(result[0]);
   });
