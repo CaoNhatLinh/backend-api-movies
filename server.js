@@ -15,7 +15,7 @@ const danhGiaRoute = require('./routes/danhgia');
 const phimTheLoaiRoute = require('./routes/phim_theloai');
 const yeuThichRoute = require('./routes/yeuthich');
 const theLoaiRoute = require('./routes/theloai');
-
+const phim_nguoiDungRoute = require('./routes/phim_nguoidung');
 
 
 app.use('/api/phim', phimRoute);
@@ -27,6 +27,7 @@ app.use('/api/danhgia', danhGiaRoute);
 app.use('/api/phim_theloai', phimTheLoaiRoute);
 app.use('/api/yeuthich', yeuThichRoute);
 app.use('/api/theloai', theLoaiRoute);
+app.use('/api/phim_nguoidung', phim_nguoiDungRoute);
 // Bắt đầu server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
