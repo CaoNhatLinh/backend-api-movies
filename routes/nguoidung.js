@@ -47,7 +47,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 //triệu thêm
-router.get('/login', (req, res) => {
+router.post('/login', (req, res) => {
   const { emailOrUsername, password } = req.body;
 
   db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
@@ -64,6 +64,15 @@ router.get('/login', (req, res) => {
     res.json({ message: "Đăng nhập thành công", user: result[0] });
   });
 });
+
+router.get('/:TenDangNhap', (req, res) => {
+  const TenDangNhap = req.params.TenDangNhap;
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?)',[TenDangNhap,TenDangNhap], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
 // router.post('/login', (req, res) => {
 //   const { Username,email, password } = req.body;
 
