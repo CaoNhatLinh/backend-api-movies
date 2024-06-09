@@ -65,7 +65,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/:TenDangNhap', (req, res) => {
+router.get('/profile/:TenDangNhap', (req, res) => {
   const TenDangNhap = req.params.TenDangNhap;
 
   if (!TenDangNhap) {
