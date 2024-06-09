@@ -303,8 +303,8 @@ router.get('/:phimId/comments', (req, res) => {
 }); 
 router.post('/:phimId/comments', (req, res) => {
   const phimId = req.params.phimId;
-  const binhLuan = req.body; 
-  db.query('INSERT INTO BinhLuan (MaPhim, NoiDung) VALUES (?, ?)', [phimId, binhLuan.noiDung], (err, result) => {
+  const { maNguoiDung, noiDung } = req.body; 
+  db.query('INSERT INTO BinhLuan (MaPhim, MaNguoiDung, NoiDung) VALUES (?, ?, ?)', [phimId, maNguoiDung, noiDung], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'Database query failed' });
@@ -313,5 +313,6 @@ router.post('/:phimId/comments', (req, res) => {
     }
   });
 });
+
 
 module.exports = router;
