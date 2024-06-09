@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-router.get('/', (req, res) => {
-  const maNguoiDung = req.query.maNguoiDung;
+router.get('/MaNguoiDung/:id', (req, res) => {
+  const maNguoiDung = req.params.id;
 
   if (!maNguoiDung) {
     return res.status(400).json({ error: 'Thiếu MaNguoiDung' });
