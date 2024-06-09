@@ -313,6 +313,23 @@ router.post('/:phimId/comments', (req, res) => {
     }
   });
 });
+router.get('/:phimId/danhgia/:userId', (req, res) => {
+  const phimId = req.params.phimId;
+  const userId = req.params.userId;
+
+  db.query('SELECT * FROM DanhGia WHERE MaPhim = ? AND MaNguoiDung = ?', [phimId, userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    } else {
+      if (result.length > 0) {
+        res.json({ hasRated: true, rating: result[0].DanhGia });
+      } else {
+        res.json({ hasRated: false });
+      }
+    }
+  });
+});
 
 
 module.exports = router;

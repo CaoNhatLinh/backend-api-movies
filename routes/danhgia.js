@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// Thêm đánh giá mới
+//Thêm đánh giá mới
 router.post('/', (req, res) => {
   const danhgia = req.body;
   db.query('INSERT INTO DanhGia SET ?', danhgia, (err, result) => {
@@ -40,6 +40,7 @@ router.post('/', (req, res) => {
     }
   });
 });
+
 
 // Cập nhật thông tin đánh giá
 router.put('/:id', (req, res) => {
