@@ -64,6 +64,28 @@ router.post('/login', (req, res) => {
     res.json({ message: "Đăng nhập thành công", user: result[0] });
   });
 });
+
+router.get('/profile/:TenDangNhap', (req, res) => {
+  const TenDangNhap = req.params.TenDangNhap;
+
+  if (!TenDangNhap) {
+      return res.status(400).json({ error: 'Tên đăng nhập không được trống.' });
+  }
+
+  // Truy vấn cơ sở dữ liệu
+  db.query('SELECT * FROM defaultdb.NguoiDung WHERE TenDangNhap = ? OR Email = ?', [TenDangNhap, TenDangNhap], (err, results) => {
+      if (err) {
+          console.error('Lỗi khi truy vấn cơ sở dữ liệu:', err);
+          return res.status(500).json({ error: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ error: 'Không tìm thấy người dùng với tên đăng nhập hoặc email này.' });
+      }
+      res.json(results[0]);
+  });
+});
+
+
 // router.post('/login', (req, res) => {
 //   const { Username,email, password } = req.body;
 
@@ -122,6 +144,49 @@ router.post('/register', (req, res) => {
       res.status(201).json({ id: result.insertId, ...nguoiDung });
     }
   });
+});
+
+// Đổi mật khẩu
+router.post('/change-password', (req, res) => {
+  const { emailOrUsername, oldPassword, newPassword } = req.body;
+
+  // Kiểm tra thông tin người dùng và mật khẩu cũ
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, oldPassword], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: "Đã xảy ra lỗi khi kiểm tra mật khẩu cũ" });
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(401).json({ message: "Mật khẩu cũ không đúng" });
+      return;
+    }
+
+    // Cập nhật mật khẩu mới
+    db.query('UPDATE NguoiDung SET MatKhau = ? WHERE MaNguoiDung = ?', [newPassword, result[0].MaNguoiDung], (err, updateResult) => {
+      if (err) {
+        res.status(500).json({ message: "Đã xảy ra lỗi khi cập nhật mật khẩu mới" });
+        return;
+      }
+
+      res.json({ message: "Đổi mật khẩu thành công" });
+    });
+  });
+});
+// checkUserExist API
+router.post('/checkUserExist', (req, res) => {
+    const { emailOrUsername } = req.body;
+
+    // Kiểm tra xem email hoặc tên đăng nhập đã tồn tại trong cơ sở dữ liệu hay chưa
+    db.query('SELECT * FROM NguoiDung WHERE TenDangNhap = ? OR Email = ?', [emailOrUsername, emailOrUsername], (err, result) => {
+        if (err) {
+            // Nếu có lỗi, trả về mã lỗi 500 và thông báo lỗi
+            res.status(500).json({ error: err.message });
+        } else {
+            // Nếu không có lỗi, trả về mã 200 và kết quả kiểm tra (true/false)
+            res.status(200).json({ exists: result.length > 0 });
+        }
+    });
 });
 
 
