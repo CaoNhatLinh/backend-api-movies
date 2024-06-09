@@ -67,9 +67,21 @@ router.post('/login', (req, res) => {
 
 router.get('/:TenDangNhap', (req, res) => {
   const TenDangNhap = req.params.TenDangNhap;
-  db.query('SELECT * FROM defaultdb.NguoiDung WHERE TenDangNhap = ? OR Email = ?',[TenDangNhap,TenDangNhap], (err, results) => {
-    if (err) throw err;
-    res.json(results);
+
+  if (!TenDangNhap) {
+      return res.status(400).json({ error: 'Tên đăng nhập không được trống.' });
+  }
+
+  // Truy vấn cơ sở dữ liệu
+  db.query('SELECT * FROM defaultdb.NguoiDung WHERE TenDangNhap = ? OR Email = ?', [TenDangNhap, TenDangNhap], (err, results) => {
+      if (err) {
+          console.error('Lỗi khi truy vấn cơ sở dữ liệu:', err);
+          return res.status(500).json({ error: 'Có lỗi xảy ra khi truy vấn cơ sở dữ liệu.' });
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ error: 'Không tìm thấy người dùng với tên đăng nhập hoặc email này.' });
+      }
+      res.json(results);
   });
 });
 
