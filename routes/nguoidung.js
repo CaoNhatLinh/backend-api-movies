@@ -173,6 +173,21 @@ router.post('/change-password', (req, res) => {
     });
   });
 });
+// checkUserExist API
+router.post('/checkUserExist', (req, res) => {
+    const { emailOrUsername } = req.body;
+
+    // Kiểm tra xem email hoặc tên đăng nhập đã tồn tại trong cơ sở dữ liệu hay chưa
+    db.query('SELECT * FROM NguoiDung WHERE TenDangNhap = ? OR Email = ?', [emailOrUsername, emailOrUsername], (err, result) => {
+        if (err) {
+            // Nếu có lỗi, trả về mã lỗi 500 và thông báo lỗi
+            res.status(500).json({ error: err.message });
+        } else {
+            // Nếu không có lỗi, trả về mã 200 và kết quả kiểm tra (true/false)
+            res.status(200).json({ exists: result.length > 0 });
+        }
+    });
+});
 
 
 module.exports = router;
