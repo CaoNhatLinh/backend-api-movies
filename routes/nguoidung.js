@@ -48,9 +48,9 @@ router.delete('/:id', (req, res) => {
 });
 //triệu thêm
 router.post('/login', (req, res) => {
-  const { emailOrUsername, password } = req.body;
+  const { Username,email, password } = req.body;
 
-  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [emailOrUsername, emailOrUsername, password], (err, result) => {
+  db.query('SELECT * FROM NguoiDung WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ?', [Username, email, password], (err, result) => {
     if (err) {
       res.status(500).json({ message: "Đã xảy ra lỗi khi đăng nhập" });
       return;

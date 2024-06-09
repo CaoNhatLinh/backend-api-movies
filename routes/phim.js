@@ -124,7 +124,7 @@ router.get('/anime', (req, res) => {
     JOIN defaultdb.TheLoai ON TheLoai.MaTheLoai = Phim_TheLoai.MaTheLoai
     WHERE TheLoai.TenTheLoai = 'Anime'
     ORDER BY Phim.NgayThem DESC
-   ;
+
   `;
   db.query(sql, (err, results) => {
     if (err) {
@@ -164,7 +164,6 @@ router.get('/love', (req, res) => {
     JOIN defaultdb.TheLoai ON TheLoai.MaTheLoai = Phim_TheLoai.MaTheLoai
     WHERE TheLoai.TenTheLoai = 'Lãng mãn' or TheLoai.TenTheLoai = 'Tình cảm'
     ORDER BY Phim.NgayThem DESC
-    ;
   `;
   db.query(sql, (err, results) => {
     if (err) {
