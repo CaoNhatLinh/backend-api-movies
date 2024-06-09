@@ -31,8 +31,8 @@ router.get('/:id', (req, res) => {
 
 //Thêm đánh giá mới
 router.post('/', (req, res) => {
-  const danhgia = req.body;
-  db.query('INSERT INTO DanhGia SET ?', danhgia, (err, result) => {
+  const { manguoidung,maphim, danhgia } = req.body;
+  db.query('INSERT INTO DanhGia(MaNguoiDung,MaPhim,DanhGia) VALUES (?,?,?)', [manguoidung,maphim,danhgia], (err, result) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
