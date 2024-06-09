@@ -81,9 +81,10 @@ router.get('/profile/:TenDangNhap', (req, res) => {
       if (results.length === 0) {
           return res.status(404).json({ error: 'Không tìm thấy người dùng với tên đăng nhập hoặc email này.' });
       }
-      res.json(results);
+      res.json(results[0]);
   });
 });
+
 
 // router.post('/login', (req, res) => {
 //   const { Username,email, password } = req.body;
