@@ -258,4 +258,60 @@ router.get('/:phimId/theloai', (req, res) => {
     res.json(results);
   });
 });
+router.post('/:phimId/danhgia', (req, res) => {
+  const phimId = req.params.phimId;
+  const danhGia = req.body; 
+  db.query('INSERT INTO DanhGia (MaPhim, MaNguoiDung, DanhGia, NgayDanhGia) VALUES (?, ?, ?, NOW())', 
+           [phimId, danhGia.maNguoiDung, danhGia.danhGia], (err, result) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.status(201).json({ message: 'Đánh giá đã được gửi thành công' }); 
+    }
+  });
+});
+router.put('/:phimId/danhgia/:userId', (req, res) => {
+  const phimId = req.params.phimId;
+  const userId = req.params.userId;
+  const newDanhGia = req.body.danhGia; 
+
+  db.query('UPDATE DanhGia SET DanhGia = ?, NgayDanhGia = NOW() WHERE MaPhim = ? AND MaNguoiDung = ?', 
+           [newDanhGia, phimId, userId], (err, result) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: 'Review not found for this user and movie' });
+      } else {
+        res.status(200).json({ message: 'Review updated successfully' }); 
+      }
+    }
+  });
+});
+router.get('/:phimId/comments', (req, res) => {
+  const phimId = req.params.phimId;
+  db.query('SELECT * FROM BinhLuan WHERE MaPhim = ?', [phimId], (err, results) => {
+    if (err) {
+      console.error(err); 
+      res.status(500).json({ error: 'Database query failed' }); 
+    } else {
+      res.json(results); 
+    }
+  });
+}); 
+router.post('/:phimId/comments', (req, res) => {
+  const phimId = req.params.phimId;
+  const binhLuan = req.body; 
+  db.query('INSERT INTO BinhLuan (MaPhim, NoiDung) VALUES (?, ?)', [phimId, binhLuan.noiDung], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    } else {
+      res.status(201).json({ message: 'Bình luận đã được thêm thành công' });
+    }
+  });
+});
+
 module.exports = router;
