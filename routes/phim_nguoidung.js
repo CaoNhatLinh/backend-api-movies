@@ -9,14 +9,14 @@ router.get('/', (req, res) => {
     if (!maNguoiDung) {
       return res.status(400).json({ error: 'Thiếu MaNguoiDung' });
     }
-    db.query('SELECT * FROM phim_nguoiDung WHERE MaNguoiDung = ?', [maNguoiDung], (err, results) => {
+    db.query('SELECT * FROM defaultdb.phim_nguoiDung WHERE MaNguoiDung = ?', [maNguoiDung], (err, results) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else {
         if (results.length > 0) {
           res.json(results);
         } else {
-          res.status(404).json({ error: 'Không tìm thấy bản ghi nào cho MaNguoiDung đã cho' });
+          res.status(404).json({ error: 'Không tìm thấy bản ghi nào cho MaNguoiDung đã cho '+maNguoiDung,});
         }
       }
     });
