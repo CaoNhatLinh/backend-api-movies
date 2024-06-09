@@ -49,7 +49,7 @@ router.put('/:id', (req, res) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
-      res.json({ id, ...newData });
+      res.json({ id, ...newData }); 
     }
   });
 });
