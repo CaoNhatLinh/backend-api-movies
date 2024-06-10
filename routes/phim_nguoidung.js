@@ -38,6 +38,29 @@ router.get('/:id', (req, res) => {
     }
   });
 });
+router.put('/', (req, res) => {
+  const maNguoiDung = req.query.maNguoiDung;
+  const maPhim = req.query.maPhim;
+  const maTapPhim = req.query.maTapPhim;
+
+  if (!maNguoiDung || !maPhim || !maTapPhim) {
+    return res.status(400).json({ error: 'Thiếu một hoặc nhiều tham số cần thiết' });
+  }
+
+  // Logic cập nhật dữ liệu tại đây
+  db.query('UPDATE phim_nguoiDung SET MaTapPhim = ? WHERE MaNguoiDung = ? AND MaPhim = ?', 
+    [maTapPhim, maNguoiDung, maPhim], (err, result) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        if (result.affectedRows === 0) {
+          res.status(404).json({ error: 'Không tìm thấy bản ghi nào với các giá trị đã cho' });
+        } else {
+          res.json({ message: 'Cập nhật thành công', maNguoiDung, maPhim, maTapPhim });
+        }
+      }
+  });
+});
 
 // Thêm một bản ghi mới vào bảng phim_nguoiDung
 router.post('/', (req, res) => {
@@ -51,20 +74,6 @@ router.post('/', (req, res) => {
   });
 });
 
-// Cập nhật thông tin của một bản ghi
-router.put('/:id', (req, res) => {
-  const id = req.params.id;
-  const newData = req.body;
-  db.query('UPDATE phim_nguoiDung SET ? WHERE maPhim_NguoiDung = ?', [newData, id], (err, result) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ id, ...newData });
-    }
-  });
-});
-
-// Xóa một bản ghi khỏi bảng phim_nguoiDung
 router.delete('/:id', (req, res) => {
   const id = req.params.id;
   db.query('DELETE FROM phim_nguoiDung WHERE maPhim_NguoiDung = ?', [id], (err, result) => {
