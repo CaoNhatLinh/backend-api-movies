@@ -64,12 +64,39 @@ router.put('/', (req, res) => {
 
 // Thêm một bản ghi mới vào bảng phim_nguoiDung
 router.post('/', (req, res) => {
-  const phimNguoiDung = req.body;
-  db.query('INSERT INTO phim_nguoiDung SET ?', phimNguoiDung, (err, result) => {
+  const { MaNguoiDung, MaPhim, MaTapPhim } = req.body;
+
+  // Bước 1: Kiểm tra xem đã có MaNguoiDung và MaPhim chưa
+  db.query('SELECT * FROM phim_nguoiDung WHERE MaNguoiDung = ? AND MaPhim = ?', [MaNguoiDung, MaPhim], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
-      res.status(201).json({ id: result.insertId, ...phimNguoiDung });
+      if (results.length > 0) {
+        // Bước 2: Nếu đã có, kiểm tra xem MaTapPhim có trùng với MaTapPhim cũ không
+        const existingMaTapPhim = results[0].MaTapPhim;
+        if (existingMaTapPhim === MaTapPhim) {
+          // Bước 3: Nếu trùng, không làm gì cả
+          res.status(200).json({ message: 'No action taken. The MaTapPhim is the same.' });
+        } else {
+          // Bước 4: Nếu không trùng, cập nhật MaTapPhim
+          db.query('UPDATE phim_nguoiDung SET MaTapPhim = ? WHERE MaNguoiDung = ? AND MaPhim = ?', [MaTapPhim, MaNguoiDung, MaPhim], (updateErr) => {
+            if (updateErr) {
+              res.status(500).json({ error: updateErr.message });
+            } else {
+              res.status(200).json({ message: 'MaTapPhim updated successfully.' });
+            }
+          });
+        }
+      } else {
+        // Bước 5: Nếu chưa có MaNguoiDung và MaPhim, thêm mới
+        db.query('INSERT INTO phim_nguoiDung SET ?', req.body, (insertErr, result) => {
+          if (insertErr) {
+            res.status(500).json({ error: insertErr.message });
+          } else {
+            res.status(201).json({ id: result.insertId, ...req.body });
+          }
+        });
+      }
     }
   });
 });
