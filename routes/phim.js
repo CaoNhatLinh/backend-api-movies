@@ -21,6 +21,20 @@ router.get('/countries', (req, res) => {
   });
 });
 
+
+// Lấy danh sách phim theo quốc gia
+router.get('/countries/:country', (req, res) => {
+  const country = req.params.country;
+  db.query('SELECT * FROM Phim WHERE QuocGia = ? ORDER BY NgayThem DESC', [country], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // Lấy danh sách phim theo quốc gia
 router.get('/countries/:country', (req, res) => {
   const country = req.params.country;
