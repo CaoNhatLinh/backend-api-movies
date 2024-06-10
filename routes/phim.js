@@ -9,6 +9,30 @@ router.get('/', (req, res) => {
     res.json(results);
   });
 });
+// Lấy danh sách quốc gia
+router.get('/countries', (req, res) => {
+  db.query('SELECT DISTINCT QuocGia FROM Phim ORDER BY QuocGia', (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// Lấy danh sách phim theo quốc gia
+router.get('/countries/:country', (req, res) => {
+  const country = req.params.country;
+  db.query('SELECT * FROM Phim WHERE QuocGia = ? ORDER BY NgayThem DESC', [country], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    } else {
+      res.json(results);
+    }
+  });
+});
 // banner
 router.get('/banner', (req, res) => {
   db.query('SELECT * FROM defaultdb.Phim WHERE Banner IS NOT NULL ORDER BY NgayThem DESC LIMIT 5', (err, results) => {
