@@ -30,9 +30,19 @@ router.get('/:id', (req, res) => {
 });
 
 // Thêm đánh giá mới
-router.post('/ThemDanhGia', (req, res) => {
-  const danhgia = req.body;
-  db.query('INSERT INTO DanhGia SET ?', danhgia, (err, result) => {
+// router.post('/ThemDanhGia', (req, res) => {
+//   const danhgia = req.body;
+//   db.query('INSERT INTO DanhGia SET ?', danhgia, (err, result) => {
+//     if (err) {
+//       res.status(500).json({ error: err.message });
+//     } else {
+//       res.status(201).json({ id: result.insertId, ...danhgia });
+//     }
+//   });
+// });
+router.post('/', (req, res) => {
+  const {Manguoidung,MapPhim, Danhgia,NgayDanhGia } = req.body;
+  db.query('INSERT INTO DanhGia(MaNguoiDung,MaPhim,DanhGia,Date) VALUES (?,?,?,?)', [Manguoidung,MapPhim,Danhgia,NgayDanhGia], (err, result) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -40,7 +50,6 @@ router.post('/ThemDanhGia', (req, res) => {
     }
   });
 });
-
 
 // Cập nhật thông tin đánh giá
 router.put('/:id', (req, res) => {
