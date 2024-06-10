@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
   });
 });
 router.get('/Tim/:maNguoiDung/:maPhim', (req, res) => {
-  const maNguoiDung = req.params.maNguoiDungid;
+  const maNguoiDung = req.params.maNguoiDung;
   const maPhim = req.params.maPhim;
   db.query('SELECT * FROM phim_nguoiDung WHERE MaNguoiDung = ? and MaPhim = ?', [maNguoiDung,maPhim], (err, result) => {
     if (err) {
